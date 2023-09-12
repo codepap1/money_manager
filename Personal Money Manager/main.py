@@ -1,20 +1,19 @@
-from transaction_manager import withdraw, deposit, check_balance, check_transaction_history, generate_report
-from user_manager import login, create_account
+from user_manager import UserManager
+from transaction_manager import TransactionManager
 
 
-# Main program
 def main():
-    # Ask if the user wants to create an account
+    user_manager = UserManager()
+    transaction_manager = TransactionManager()
+
     create_account_option = input("Do you want to create an account? (yes/no): ")
     if create_account_option.lower() == "yes":
-        create_account()
+        user_manager.create_account()
 
-    # User authentication
-    username = login()
+    username = user_manager.login()
     if not username:
         return
 
-    # Menu
     while True:
         print("\n===== Personal Money Manager =====")
         print("1. Withdraw")
@@ -27,21 +26,23 @@ def main():
         choice = input("Enter your choice (1-6): ")
 
         if choice == "1":
-            withdraw(username)
+            transaction_manager.withdraw(username)
         elif choice == "2":
-            deposit(username)
+            transaction_manager.deposit(username)
         elif choice == "3":
-            check_balance(username)
+            transaction_manager.check_balance(username)
         elif choice == "4":
-            check_transaction_history(username)
+            transaction_manager.check_transaction_history(username)
         elif choice == "5":
-            generate_report()
+            transaction_manager.generate_report()
         elif choice == "6":
+            print("\n====================================")
             print("Logged out.")
             break
         else:
+            print("\n====================================")
             print("Invalid choice. Please try again.")
 
 
-# Run the program
-main()
+if __name__ == "__main__":
+    main()
